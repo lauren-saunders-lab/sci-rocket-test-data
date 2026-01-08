@@ -65,6 +65,8 @@ rule make_bcl_reads:
         # convert fastq to bcl
         mkdir -p {output.dir}
         fastq2bcl -r1 {input.r1} -r2 {input.r2} -o {output.dir} &>> {log} && touch {output.touch}
+        # move bcl files out of nested directory
+        mv {output.dir}/YYMMDD_VH00821_0006_AACCCKLM5/* {output.dir}/.
 
         # convert the generated bcl files back to fastq to verify integrity
         mkdir -p {params.roundtrip_dir}
@@ -78,7 +80,7 @@ rule make_bcl_reads:
             --no-lane-splitting \
             --minimum-trimmed-read-length 15 \
             --mask-short-adapter-reads 15 \
-            -R {output.dir}/YYMMDD_VH00821_0006_AACCCKLM5 \
+            -R {output.dir} \
             --sample-sheet {params.roundtrip_dir}/fake.csv \
             --output-dir {params.roundtrip_dir} \
             &>> {log}
