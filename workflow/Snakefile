@@ -35,6 +35,15 @@ rule make_upload_archive:
     shell:
         """
         cd {params.results_dir}
+        # modify the fastq names (they must contain R1/R2 and end with .fastq.gz)
+        mv reads/fastq_from_aviti/two_runs/run1/Undetermined_S0_R1_001.fastq.gz reads/fastq_from_aviti/two_runs/run1/beepR1.fastq.gz
+        mv reads/fastq_from_aviti/two_runs/run1/Undetermined_S0_R2_001.fastq.gz reads/fastq_from_aviti/two_runs/run1/boopR2.fastq.gz
+        mv reads/fastq_from_aviti/two_runs/run2/Undetermined_S0_R1_001.fastq.gz reads/fastq_from_aviti/two_runs/run2/R1.fastq.gz
+        mv reads/fastq_from_aviti/two_runs/run2/Undetermined_S0_R2_001.fastq.gz reads/fastq_from_aviti/two_runs/run2/R2.fastq.gz
+        mv reads/fastq_from_bcl/two_runs/run1/Undetermined_S0_R1_001.fastq.gz reads/fastq_from_bcl/two_runs/run1/R11.fastq.gz
+        mv reads/fastq_from_bcl/two_runs/run1/Undetermined_S0_R2_001.fastq.gz reads/fastq_from_bcl/two_runs/run1/R21.fastq.gz
+        mv reads/fastq_from_bcl/two_runs/run2/Undetermined_S0_R1_001.fastq.gz reads/fastq_from_bcl/two_runs/run2/R1_001.fastq.gz
+        mv reads/fastq_from_bcl/two_runs/run2/Undetermined_S0_R2_001.fastq.gz reads/fastq_from_bcl/two_runs/run2/R2_001.fastq.gz
         tar -czvf {output}  *
         """
 
@@ -98,10 +107,10 @@ rule process_fastq:
     output:
         r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/one_run/run1/Undetermined_S0_R1_001.fastq.gz",
         r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/one_run/run1/Undetermined_S0_R2_001.fastq.gz",
-        run1r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/beepR1.fastq.gz",
-        run1r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/boopR2.fastq.gz",
-        run2r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/R1.fastq.gz",
-        run2r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/R2.fastq.gz",
+        run1r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/Undetermined_S0_R1_001.fastq.gz",
+        run1r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/Undetermined_S0_R2_001.fastq.gz",
+        run2r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/Undetermined_S0_R1_001.fastq.gz",
+        run2r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/Undetermined_S0_R2_001.fastq.gz",
         touch=touch(f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/.done"),
 
     params:
