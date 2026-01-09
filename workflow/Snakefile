@@ -19,10 +19,8 @@ rule make_upload_archive:
         f"{config['OUTPUT_DIR']}/results/genome/dna.fa",
         f"{config['OUTPUT_DIR']}/results/genome/dna.gtf",
         expand(
-            f"{config['OUTPUT_DIR']}/results/reads/{{source}}/{{run_type}}/Undetermined_S0_{{read}}_001.fastq.gz",
+            f"{config['OUTPUT_DIR']}/results/reads/{{source}}/.done",
             source=["fastq_from_aviti", "fastq_from_bcl"],
-            run_type=["one_run/run1", "two_runs/run1", "two_runs/run2"],
-            read=["R1", "R2"],
         ),
         expand(
             f"{config['OUTPUT_DIR']}/results/reads/bcl/{{run_type}}/.done",
@@ -100,10 +98,12 @@ rule process_fastq:
     output:
         r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/one_run/run1/Undetermined_S0_R1_001.fastq.gz",
         r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/one_run/run1/Undetermined_S0_R2_001.fastq.gz",
-        run1r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/Undetermined_S0_R1_001.fastq.gz",
-        run1r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/Undetermined_S0_R2_001.fastq.gz",
-        run2r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/Undetermined_S0_R1_001.fastq.gz",
-        run2r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/Undetermined_S0_R2_001.fastq.gz",
+        run1r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/beepR1.fastq.gz",
+        run1r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run1/boopR2.fastq.gz",
+        run2r1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/R1.fastq.gz",
+        run2r2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs/run2/R2.fastq.gz",
+        touch=touch(f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/.done"),
+
     params:
         output_dir1=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/one_run",
         output_dir2=f"{config['OUTPUT_DIR']}/results/reads/{{fastq_source}}/two_runs",
